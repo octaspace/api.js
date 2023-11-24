@@ -1,6 +1,6 @@
 {
   "name": "@octaspace/api.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Package to interact with OctaSpace API",
   "type": "commonjs",
   "main": "build/index.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/octaspace/api.js.git"
+    "url": "git+https://github.com/octaspace/api.js.git"
   },
   "bugs": {
     "url": "https://github.com/octaspace/api.js/issues"
@@ -31,5 +31,12 @@
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.9"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "OctaSpace",
+    "API"
+  ]
 }
