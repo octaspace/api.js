@@ -24,6 +24,9 @@ export async function createVPNService(host:string, key:string, type:VpnType, no
         if(response.status==401){
             throw new KeyError('Invalid API Key');
         }
+        if(response.status==400){
+            throw new ApiError((await response.json()).message)
+        }
         throw new ApiError(`Invalid API response code:${response.status}`,response.status);
     }
     catch(error){
