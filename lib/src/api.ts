@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import { ApiError, KeyError, UUIDError } from './error'
-import { checkKey, checkUUID } from './functions'
+import { checkKey, checkUUID, wait } from './functions'
 import {
     VpnType,
     accountBalance,
@@ -112,7 +112,7 @@ export async function getVPNService(
                     if (res.is_ready == true || i == 4) {
                         return res
                     }
-                    await setTimeout(2000)
+                    await wait(2000)
                     continue
                 } else {
                     throw new ApiError(

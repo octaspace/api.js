@@ -1,43 +1,43 @@
 {
-  "name": "@octaspace/api.js",
-  "version": "1.0.1",
-  "description": "Package to interact with OctaSpace API",
-  "type": "commonjs",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "files": [
-    "build"
-  ],
-  "scripts": {
-    "build": "tsc"
-  },
-  "author": "octaspace",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/octaspace/api.js.git"
-  },
-  "bugs": {
-    "url": "https://github.com/octaspace/api.js/issues"
-  },
-  "homepage": "https://github.com/octaspace/api.js",
-  "license": "MIT",
-  "dependencies": {
-    "@types/node": "^20.9.1",
-    "node-fetch": "2.6.7",
-    "typescript": "^5.2.2"
-  },
-  "devDependencies": {
-    "@types/node-fetch": "^2.6.9",
-    "prettier": "3.1.0"
-  },
-  "directories": {
-    "lib": "lib"
-  },
-  "keywords": [
-    "octaspace",
-    "api"
-  ]
+    "name": "@octaspace/api.js",
+    "version": "1.0.1",
+    "description": "Package to interact with OctaSpace API",
+    "type": "commonjs",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "files": [
+        "build"
+    ],
+    "scripts": {
+        "build": "tsc"
+    },
+    "author": "octaspace",
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/octaspace/api.js.git"
+    },
+    "bugs": {
+        "url": "https://github.com/octaspace/api.js/issues"
+    },
+    "homepage": "https://github.com/octaspace/api.js",
+    "license": "MIT",
+    "dependencies": {
+        "node-fetch": "2.6.7",
+        "typescript": "^5.2.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.10.5",
+        "@types/node-fetch": "^2.6.9",
+        "prettier": "3.1.0"
+    },
+    "directories": {
+        "lib": "lib"
+    },
+    "keywords": [
+        "octaspace",
+        "api"
+    ]
 }

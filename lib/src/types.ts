@@ -12,16 +12,21 @@ export type serviceUUID = {
     uuid: string
 }
 
-export type VpnType = 'wg' | 'openvpn'
+export type VpnType = 'wg' | 'openvpn' | 'http_proxy'
+
+export type proxyConfig = {
+    ip: string
+    port: number
+}
 
 export type vpnDetails = {
     city: string
-    config: string
+    config: string | proxyConfig
     country: string
     ip: string
     is_ready: boolean
     qr?: string
-    subkinnd?: string
+    subkinnd?: VpnType
 }
 
 export type vpnNodes = {
