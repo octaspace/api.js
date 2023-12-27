@@ -89,7 +89,8 @@ export async function stopVPNService(
 export async function getVPNService(
     host: string,
     key: string,
-    uuid: string
+    uuid: string,
+    retryCount:number, retryDuration:number
 ): Promise<vpnDetails> {
     try {
         if (!checkKey(key)) {
@@ -98,7 +99,7 @@ export async function getVPNService(
         if (!checkUUID(uuid)) {
             throw new UUIDError('UUID Required')
         }
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < retryCount; i++) {
             const response = await fetch(`${host}/services/${uuid}/info`, {
                 method: 'GET',
                 headers: { Authorization: key },
@@ -109,10 +110,10 @@ export async function getVPNService(
                 if (typeof data === 'object' && data !== null) {
                     const res = data as vpnDetails
 
-                    if (res.is_ready == true || i == 4) {
+                    if (res.is_ready == true || i == retryCount-1) {
                         return res
                     }
-                    await wait(2000)
+                    await wait(retryDuration)
                     continue
                 } else {
                     throw new ApiError(

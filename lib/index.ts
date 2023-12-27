@@ -21,8 +21,8 @@ class Octa {
         return createVPNService(this.OCTA_ENDPOINT, this.apikey, type, node)
     }
 
-    getVPN(uuid: string) {
-        return getVPNService(this.OCTA_ENDPOINT, this.apikey, uuid)
+    getVPN(uuid: string, retryCount:number, retryDuration:number) {
+        return getVPNService(this.OCTA_ENDPOINT, this.apikey, uuid, retryCount, retryDuration)
     }
 
     stopVPN(uuid: string) {
