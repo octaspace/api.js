@@ -2,11 +2,13 @@ import fetch from 'node-fetch'
 import { ApiError, KeyError, UUIDError } from './error'
 import { checkKey, checkUUID, wait } from './functions'
 import {
+    UserEnvs,
     VpnType,
     accountBalance,
     accountDetails,
+    mrNodes,
+    serviceDetails,
     serviceUUID,
-    vpnDetails,
     vpnNodes,
 } from './types'
 import { setTimeout } from 'timers/promises'
@@ -55,7 +57,7 @@ export async function createVPNService(
     }
 }
 
-export async function stopVPNService(
+export async function stopService(
     host: string,
     key: string,
     uuid: string
@@ -86,12 +88,13 @@ export async function stopVPNService(
     }
 }
 
-export async function getVPNService(
+export async function getService(
     host: string,
     key: string,
     uuid: string,
-    retryCount:number, retryDuration:number
-): Promise<vpnDetails> {
+    retryCount: number,
+    retryDuration: number
+): Promise<serviceDetails> {
     try {
         if (!checkKey(key)) {
             throw new KeyError('Invalid API Key')
@@ -108,9 +111,9 @@ export async function getVPNService(
                 const data: unknown = await response.json()
 
                 if (typeof data === 'object' && data !== null) {
-                    const res = data as vpnDetails
+                    const res = data as serviceDetails
 
-                    if (res.is_ready == true || i == retryCount-1) {
+                    if (res.is_ready == true || i == retryCount - 1) {
                         return res
                     }
                     await wait(retryDuration)
@@ -232,6 +235,92 @@ export async function getBalance(
         }
         if (response.status == 401) {
             throw new KeyError('Invalid API Key')
+        }
+        throw new ApiError(
+            `Invalid API response code:${response.status}`,
+            response.status
+        )
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function listMRNodes(
+    host: string,
+    key: string
+): Promise<mrNodes[]> {
+    try {
+        if (!checkKey(key)) {
+            throw new KeyError('Invalid API Key')
+        }
+        const response = await fetch(`${host}/services/mr`, {
+            method: 'GET',
+            headers: { Authorization: key },
+        })
+        if (response.status == 200) {
+            const data: mrNodes[] = await response.json()
+
+            return data
+        }
+        if (response.status == 401) {
+            throw new KeyError('Invalid API Key')
+        }
+        throw new ApiError(
+            `Invalid API response code:${response.status}`,
+            response.status
+        )
+    } catch (error) {
+        throw error
+    }
+}
+
+export async function createMRService(
+    host: string,
+    key: string,
+    image: string,
+    disk: number,
+    node: number,
+    envs?: UserEnvs
+): Promise<serviceUUID> {
+    try {
+        if (!checkKey(key)) {
+            throw new KeyError('Invalid API Key')
+        }
+        if (disk < 1) {
+            throw new ApiError('Invalid Disk Size, should be atleast 1GB')
+        }
+        if (!envs) {
+            envs = {}
+        }
+        let body = {
+            node_id: node,
+            image: image,
+            disk_size: Math.round(disk),
+            envs: envs,
+        }
+        const response = await fetch(`${host}/services/mr`, {
+            method: 'POST',
+            headers: { Authorization: key, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        })
+        if (response.status == 201) {
+            const data: unknown = await response.json()
+
+            if (typeof data === 'object' && data !== null) {
+                return data as serviceUUID
+            } else {
+                throw new ApiError(
+                    'Invalid response data',
+                    response.status,
+                    data
+                )
+            }
+        }
+        if (response.status == 401) {
+            throw new KeyError('Invalid API Key')
+        }
+        if (response.status == 400) {
+            throw new ApiError((await response.json()).message)
         }
         throw new ApiError(
             `Invalid API response code:${response.status}`,

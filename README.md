@@ -38,6 +38,25 @@ Returns UUID
 
 `const vpnNodes = await octa.getVPNNodes();`
 
+### Create MR Service:
+
+Pass image (string), disk size(number), env(optional), and nodeid (number) as parameter.
+
+`const createdMR = await octa.createMR('image', 1, nodeid, {"env1":"value","env2":"value"});`
+
+
+### Get MR Service Details:
+
+`const mrDetails = await octa.getMR('uuid');`
+
+### Stop MR Service:
+
+`await octa.stopMR('uuid');`
+
+### Get MR Node List:
+
+`const mrNodes = await octa.getMRNodes();`
+
 ### Get Account Details:
 
 `const accountDetails = await octa.getAccountInfo();`

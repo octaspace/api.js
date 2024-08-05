@@ -1,13 +1,15 @@
 import {
+    createMRService,
     createVPNService,
     getAccountDetails,
     getBalance,
-    getVPNService,
+    getService,
+    listMRNodes,
     listVPNNodes,
-    stopVPNService,
+    stopService,
 } from './src/api'
 import { ApiError, KeyError, UUIDError } from './src/error'
-import { VpnType } from './src/types'
+import { UserEnvs, VpnType } from './src/types'
 
 class Octa {
     private apikey: string
@@ -17,16 +19,26 @@ class Octa {
         this.apikey = apikey
     }
 
+    getNetworkInfo() {
+        return getBalance(this.OCTA_ENDPOINT, this.apikey)
+    }
+
     createVPN(type: VpnType, node: number) {
         return createVPNService(this.OCTA_ENDPOINT, this.apikey, type, node)
     }
 
-    getVPN(uuid: string, retryCount:number, retryDuration:number) {
-        return getVPNService(this.OCTA_ENDPOINT, this.apikey, uuid, retryCount, retryDuration)
+    getVPN(uuid: string, retryCount: number, retryDuration: number) {
+        return getService(
+            this.OCTA_ENDPOINT,
+            this.apikey,
+            uuid,
+            retryCount,
+            retryDuration
+        )
     }
 
     stopVPN(uuid: string) {
-        return stopVPNService(this.OCTA_ENDPOINT, this.apikey, uuid)
+        return stopService(this.OCTA_ENDPOINT, this.apikey, uuid)
     }
 
     getVPNNodes() {
@@ -39,6 +51,35 @@ class Octa {
 
     getAccountBalance() {
         return getBalance(this.OCTA_ENDPOINT, this.apikey)
+    }
+
+    getMRNodes() {
+        return listMRNodes(this.OCTA_ENDPOINT, this.apikey)
+    }
+
+    createMR(image: string, disk: number, node: number, envs?: UserEnvs) {
+        return createMRService(
+            this.OCTA_ENDPOINT,
+            this.apikey,
+            image,
+            disk,
+            node,
+            envs
+        )
+    }
+
+    getMR(uuid: string, retryCount: number, retryDuration: number) {
+        return getService(
+            this.OCTA_ENDPOINT,
+            this.apikey,
+            uuid,
+            retryCount,
+            retryDuration
+        )
+    }
+
+    stopMR(uuid: string) {
+        return stopService(this.OCTA_ENDPOINT, this.apikey, uuid)
     }
 }
 
