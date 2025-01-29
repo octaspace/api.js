@@ -5,12 +5,12 @@ export class ApiError extends Error {
         super(message)
         Object.setPrototypeOf(this, ApiError.prototype)
         this.name = 'OctaApiError'
+        this.code = code
         this.responseData = responseData
     }
 }
 
 export class KeyError extends Error {
-    public code?: number
     constructor(message: string) {
         super(message)
         Object.setPrototypeOf(this, KeyError.prototype)
@@ -19,10 +19,17 @@ export class KeyError extends Error {
 }
 
 export class UUIDError extends Error {
-    public code?: number
     constructor(message: string) {
         super(message)
         Object.setPrototypeOf(this, KeyError.prototype)
         this.name = 'OctaUUIDError'
+    }
+}
+
+export class InvalidParameterError extends Error {
+    constructor(message: string) {
+        super(message)
+        Object.setPrototypeOf(this, KeyError.prototype)
+        this.name = 'InvalidParameterError'
     }
 }

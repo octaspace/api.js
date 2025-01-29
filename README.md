@@ -44,7 +44,6 @@ Pass image (string), disk size(number), env(optional), and nodeid (number) as pa
 
 `const createdMR = await octa.createMR('image', 1, nodeid, {"env1":"value","env2":"value"});`
 
-
 ### Get MR Service Details:
 
 `const mrDetails = await octa.getMR('uuid');`
@@ -72,6 +71,7 @@ Note: checkout `lib/src/types.ts` for detail information about what they return.
 -   `KeyError`: Thrown for issues with the API key. Ex: Wrong API Key
 -   `UUIDError`: Thrown for issues with the UUID.
 -   `ApiError`: Generic API error. Ex: Due to Network Error
+-   `InvalidParameterError`: Invalid Parameter.
 
 ## License
 

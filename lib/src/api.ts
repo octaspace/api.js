@@ -1,14 +1,17 @@
 import fetch from 'node-fetch'
-import { ApiError, KeyError, UUIDError } from './error'
+import { ApiError, InvalidParameterError, KeyError, UUIDError } from './error'
 import { checkKey, checkUUID, wait } from './functions'
 import {
+    MRCreate,
     UserEnvs,
+    VPNCreate,
     VpnType,
     accountBalance,
     accountDetails,
     mrNodes,
     serviceDetails,
     serviceUUID,
+    v2rayKinds,
     vpnNodes,
 } from './types'
 import { setTimeout } from 'timers/promises'
@@ -17,13 +20,23 @@ export async function createVPNService(
     host: string,
     key: string,
     type: VpnType,
-    node: number
+    node: number,
+    protocol?: v2rayKinds
 ): Promise<serviceUUID> {
     try {
         if (!checkKey(key)) {
             throw new KeyError('Invalid API Key')
         }
-        let body = { node_id: node, subkind: type, kind: 'vpn' }
+        if (type != 'v2ray' && protocol) {
+            throw new InvalidParameterError(
+                'Protocol can only be specified for v2ray VPN type'
+            )
+        }
+        let body: VPNCreate = {
+            node_id: node,
+            subkind: type,
+            ...(protocol && { protocol }),
+        }
         const response = await fetch(`${host}/services/vpn`, {
             method: 'POST',
             headers: { Authorization: key, 'Content-Type': 'application/json' },
@@ -280,7 +293,11 @@ export async function createMRService(
     image: string,
     disk: number,
     node: number,
-    envs?: UserEnvs
+    envs?: UserEnvs,
+    app?: string,
+    http_ports?: number[],
+    ports?: number[],
+    start_command?: string
 ): Promise<serviceUUID> {
     try {
         if (!checkKey(key)) {
@@ -292,11 +309,15 @@ export async function createMRService(
         if (!envs) {
             envs = {}
         }
-        let body = {
+        let body: MRCreate = {
             node_id: node,
             image: image,
             disk_size: Math.round(disk),
-            envs: envs,
+            ...(app && { app }),
+            ...(envs && Object.keys(envs).length > 0 && { envs }),
+            ...(http_ports && http_ports.length > 0 && { http_ports }),
+            ...(ports && ports.length > 0 && { ports }),
+            ...(start_command && { start_command }),
         }
         const response = await fetch(`${host}/services/mr`, {
             method: 'POST',

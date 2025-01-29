@@ -13,7 +13,7 @@ import { UserEnvs, VpnType } from './src/types'
 
 class Octa {
     private apikey: string
-    private OCTA_ENDPOINT: string = 'https://api.octa.space/v1'
+    private OCTA_ENDPOINT: string = 'https://api.octa.computer'
 
     constructor(apikey: string) {
         this.apikey = apikey
