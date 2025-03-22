@@ -1,6 +1,6 @@
 {
     "name": "@octaspace/api.js",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Package to interact with OctaSpace API",
     "type": "commonjs",
     "main": "build/index.js",
