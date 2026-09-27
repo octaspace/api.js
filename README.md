@@ -1,3 +1,5 @@
+> **Deprecated:** this package is superseded by the current official JavaScript SDK [`@octaspace/sdk`](https://github.com/octaspace/js-sdk) (`npm install @octaspace/sdk`). This package is no longer updated — please migrate.
+
 ## Octaspace API Client Package
 
 ### @octaspace/api.js
